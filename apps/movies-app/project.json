@@ -1,0 +1,84 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/movies-app/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/web:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "compiler": "babel",
+        "outputPath": "dist/apps/movies-app",
+        "index": "apps/movies-app/src/index.html",
+        "baseHref": "/",
+        "main": "apps/movies-app/src/main.tsx",
+        "polyfills": "apps/movies-app/src/polyfills.ts",
+        "tsConfig": "apps/movies-app/tsconfig.app.json",
+        "assets": [
+          "apps/movies-app/src/favicon.ico",
+          "apps/movies-app/src/assets"
+        ],
+        "styles": [],
+        "scripts": [],
+        "webpackConfig": "@nrwl/react/plugins/webpack"
+      },
+      "configurations": {
+        "development": {
+          "extractLicenses": false,
+          "optimization": false,
+          "sourceMap": true,
+          "vendorChunk": true
+        },
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "apps/movies-app/src/environments/environment.ts",
+              "with": "apps/movies-app/src/environments/environment.prod.ts"
+            }
+          ],
+          "optimization": true,
+          "outputHashing": "all",
+          "sourceMap": false,
+          "namedChunks": false,
+          "extractLicenses": true,
+          "vendorChunk": false
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/web:dev-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "movies-app:build",
+        "hmr": true,
+        "proxyConfig": "apps/movies-app/proxy.conf.json"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "movies-app:build:development"
+        },
+        "production": {
+          "buildTarget": "movies-app:build:production",
+          "hmr": false
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/movies-app/**/*.{ts,tsx,js,jsx}"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/apps/movies-app"],
+      "options": {
+        "jestConfig": "apps/movies-app/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}
